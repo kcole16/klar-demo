@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clothing Order Image Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .image-item {
+            flex: 1 1 30%;
+            max-width: 30%;
+            text-align: center;
+            margin: 5px;
+        }
+        .image-item img {
+            max-height: 200px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Closet</h1>
+    <button id="connect-button">Connect Gmail</button>
+    <div id="status"></div>
+
+    {% if clothing_items %}
+        <div id="images-container">
+            {% for item in clothing_items %}
+                {% if loop.index0 % 3 == 0 %}
+                    <div class="row">
+                {% endif %}
+                
+                <div class="image-item">
+                    <img src="{{ item.img_src }}" alt="{{ item.item_type }}">
+                    <p>{{ item.item_type }}</p>
+                </div>
+                
+                {% if loop.index0 % 3 == 2 or loop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No clothing orders found in your recent emails.</p>
+    {% endif %}
+
+    <script>
+        document.getElementById('connect-button').addEventListener('click', () => {
+            window.location.href = '/authorize';
+        });
+    </script>
+</body>
+</html>
+
